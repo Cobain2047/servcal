@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Combined Calculator</title>
+  <style>
+    /* Styles for calculator */
+    body {
+      background-color: #eaeaea;
+      font-family: Arial, sans-serif;
+    }
+
+    .calculator {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .calculator h2 {
+      text-align: center;
+    }
+
+    .calculator label {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .calculator input {
+      width: 100%;
+      padding: 5px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .result {
+      margin-top: 20px;
+      background-color: #f2f2f2;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    /* Styles for reset button */
+    .reset-button {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .reset-button button {
+      padding: 8px 16px;
+      border-radius: 5px;
+      background-color: #29ABE2;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h2>Service and Profit Calculator</h2>
+
+    <label for="laborCostPerHour">Labor cost per hour:</label>
+    <input type="number" id="laborCostPerHour" placeholder="Enter labor cost per hour">
+
+    <label for="hoursOfLabor">Hours of labor:</label>
+    <input type="number" id="hoursOfLabor" placeholder="Enter hours of labor">
+
+    <label for="numBedrooms">Number of bedrooms:</label>
+    <input type="number" id="numBedrooms" placeholder="Enter number of bedrooms">
+
+    <label for="numBathrooms">Number of bathrooms:</label>
+    <input type="number" id="numBathrooms" placeholder="Enter number of bathrooms">
+
+    <div class="result" id="serviceResult"></div>
+
+    <label for="jobPrice">Job price:</label>
+    <input type="number" id="jobPrice" placeholder="Enter job price">
+
+    <label for="laborCost">Labor cost:</label>
+    <input type="number" id="laborCost" placeholder="Enter labor cost">
+
+    <div class="result" id="profitResult"></div>
+
+    <div class="reset-button">
+      <button onclick="resetCalculators()">Reset</button>
+    </div>
+  </div>
+
+  <script>
+    var laborCostPerHourInput = document.getElementById("laborCostPerHour");
+    var hoursOfLaborInput = document.getElementById("hoursOfLabor");
+    var numBedroomsInput = document.getElementById("numBedrooms");
+    var numBathroomsInput = document.getElementById("numBathrooms");
+    var serviceResultDiv = document.getElementById("serviceResult");
+
+    var jobPriceInput = document.getElementById("jobPrice");
+    var laborCostInput = document.getElementById("laborCost");
+    var profitResultDiv = document.getElementById("profitResult");
+
+    var calculateService = function() {
+      var laborCostPerHour = parseFloat(laborCostPerHourInput.value) || 0;
+      var hoursOfLabor = parseFloat(hoursOfLaborInput.value) || 0;
+      var numBedrooms = parseInt(numBedroomsInput.value) || 0;
+      var numBathrooms = parseInt(numBathroomsInput.value) || 0;
+
+      var laborCost = laborCostPerHour * hoursOfLabor;
+      var bedroomCost = numBedrooms * 25.0;
+      var bathroomCost = numBathrooms * 30.0;
+      var totalCost = laborCost + bedroomCost + bathroomCost;
+
+      serviceResultDiv.innerHTML = "Service Estimate:<br>" +
+        "Labor Cost: $" + laborCost.toFixed(2) + "<br>" +
+        "Number of Bedrooms: " + numBedrooms + "<br>" +
+        "Number of Bathrooms: " + numBathrooms + "<br>" +
+        "Bedroom Cost: $" + bedroomCost.toFixed(2) + "<br>" +
+        "Bathroom Cost: $" + bathroomCost.toFixed(2) + "<br>" +
+        "Total Cost: $" + totalCost.toFixed(2);
+
+      laborCostInput.value = laborCost.toFixed(2); // Update labor cost in the profit calculator
+      calculateProfit(); // Recalculate profit based on new labor cost
+    };
+
+    var calculateProfit = function() {
+      var jobPrice = parseFloat(jobPriceInput.value) || 0;
+      var laborCost = parseFloat(laborCostInput.value) || 0;
+
+      var profit = jobPrice - laborCost;
+      var profitPercentage = (profit / jobPrice) * 100;
+
+      profitResultDiv.innerHTML = "Profit:<br>" +
+        "Amount: $" + profit.toFixed(2) + "<br>" +
+        "Percentage: " + profitPercentage.toFixed(2) + "%";
+    };
+
+    var resetCalculators = function() {
+      laborCostPerHourInput.value = "";
+      hoursOfLaborInput.value = "";
+      numBedroomsInput.value = "";
+      numBathroomsInput.value = "";
+      serviceResultDiv.innerHTML = "";
+
+      jobPriceInput.value = "";
+      laborCostInput.value = "";
+      profitResultDiv.innerHTML = "";
+    };
+
+    var inputs = document.querySelectorAll(".calculator input");
+    inputs.forEach(function(input) {
+      input.addEventListener("input", calculateService);
+      input.addEventListener("input", calculateProfit);
+    });
+  </script>
+</body>
+</html>
